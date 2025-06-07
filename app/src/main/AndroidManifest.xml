@@ -208,5 +208,10 @@
             </intent-filter>
         </activity-alias>
 
+        <activity
+            android:name=".ui.BetaConsentActivity"
+            android:label="@string/beta_consent_title"
+            android:parentActivityName=".ui.MainActivity" />
+
     </application>
 </manifest>

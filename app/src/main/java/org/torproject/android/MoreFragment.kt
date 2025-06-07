@@ -29,6 +29,7 @@ import org.torproject.android.ui.OrbotMenuAction
 import org.torproject.android.ui.SettingsActivity
 import org.torproject.android.ui.v3onionservice.OnionServiceActivity
 import org.torproject.android.ui.v3onionservice.clientauth.ClientAuthActivity
+import org.torproject.android.ui.BetaConsentActivity
 
 class MoreFragment : Fragment() {
     private var httpPort = -1
@@ -104,6 +105,9 @@ class MoreFragment : Fragment() {
             },
             OrbotMenuAction(R.string.v3_client_auth_activity_title, R.drawable.ic_shield) {
                 startActivity(Intent(requireActivity(), ClientAuthActivity::class.java))
+            },
+            OrbotMenuAction(R.string.beta_consent_title, R.drawable.ic_beta) {
+                startActivity(Intent(requireActivity(), BetaConsentActivity::class.java))
             },
             OrbotMenuAction(R.string.menu_about, R.drawable.ic_about) {
                 AboutDialogFragment().show(
