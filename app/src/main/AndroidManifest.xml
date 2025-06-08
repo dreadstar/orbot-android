@@ -132,6 +132,9 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".service.MeshrabiyaService"
+            android:exported="false" />
 
         <activity-alias
             android:name=".main.NightWatch"
