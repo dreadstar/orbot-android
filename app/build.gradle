@@ -67,6 +67,12 @@ android {
     flavorDimensions = ["free"]
 
     productFlavors {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://guardianproject.info/repo' }
+    }
         fullperm {
             dimension "free"
             applicationId "org.torproject.android"
