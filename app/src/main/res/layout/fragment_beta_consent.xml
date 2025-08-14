@@ -4,63 +4,131 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvDescription"
+        <!-- Card: Consent Status & Actions -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:textSize="16sp" />
+            android:orientation="vertical"
+            android:background="@drawable/card_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="@string/beta_consent_level_title"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvConsentStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:text="Status" />
 
-        <RadioGroup
-            android:id="@+id/rgLogLevel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp">
-
-            <RadioButton
-                android:id="@+id/rbBasic"
+            <Button
+                android:id="@+id/btnEnableConsent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/beta_consent_level_basic" />
+                android:text="@string/beta_consent_enable"
+                android:layout_marginTop="8dp" />
 
-            <RadioButton
-                android:id="@+id/rbDetailed"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/beta_consent_level_detailed" />
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+                <Button
+                    android:id="@+id/btnChangeConsent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/beta_consent_change" />
+                <Button
+                    android:id="@+id/btnExport"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/beta_consent_export"
+                    android:layout_marginStart="8dp" />
+                <Button
+                    android:id="@+id/btnClear"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/beta_consent_clear"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+        </LinearLayout>
 
-            <RadioButton
-                android:id="@+id/rbFull"
+        <!-- Card: Data Collection Statistics -->
+        <LinearLayout
+            android:id="@+id/statsGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/card_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+            <TextView android:text="@string/beta_consent_stats_title"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp" />
+            <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/beta_consent_level_full" />
+                android:columnCount="3"
+                android:rowCount="2"
+                android:layout_marginBottom="8dp">
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <TextView android:id="@+id/tvMeshEvents" android:text="0" android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+                    <TextView android:text="@string/beta_consent_mesh_events" android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <TextView android:id="@+id/tvUserActions" android:text="0" android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+                    <TextView android:text="@string/beta_consent_user_actions" android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <TextView android:id="@+id/tvNetworkConditions" android:text="0" android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+                    <TextView android:text="@string/beta_consent_network_conditions" android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <TextView android:id="@+id/tvBatteryImpacts" android:text="0" android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+                    <TextView android:text="@string/beta_consent_battery_impacts" android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <TextView android:id="@+id/tvInstallationSteps" android:text="0" android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+                    <TextView android:text="@string/beta_consent_installation_steps" android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <TextView android:id="@+id/tvProtestMetrics" android:text="0" android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+                    <TextView android:text="@string/beta_consent_protest_metrics" android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                </LinearLayout>
+            </GridLayout>
+            <TextView android:id="@+id/tvTotalEntries" android:text="@string/beta_consent_total_entries_placeholder" android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+        </LinearLayout>
 
-        </RadioGroup>
-
-        <Button
-            android:id="@+id/btnExport"
+        <!-- Card: Privacy & Security -->
+        <LinearLayout
+            android:id="@+id/privacyInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/btnClear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-
+            android:orientation="vertical"
+            android:background="@drawable/card_bg"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+            <TextView android:text="@string/beta_consent_privacy_title"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp" />
+            <TextView android:text="@string/beta_consent_privacy_1" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <TextView android:text="@string/beta_consent_privacy_2" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <TextView android:text="@string/beta_consent_privacy_3" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <TextView android:text="@string/beta_consent_privacy_4" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <TextView android:text="@string/beta_consent_privacy_protest" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@color/yellow_50" android:padding="8dp" android:layout_marginTop="8dp" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView> 

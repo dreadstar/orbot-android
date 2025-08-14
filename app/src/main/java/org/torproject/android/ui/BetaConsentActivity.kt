@@ -35,11 +35,12 @@ class BetaConsentActivity : AppCompatActivity() {
 }
 
 class BetaConsentFragment : Fragment() {
-    private lateinit var betaLogger: BetaTestLogger
+    private lateinit var viewModel: BetaConsentViewModel
+    private var consentDialog: ConsentDialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        betaLogger = BetaTestLogger.getInstance(requireContext())
+        viewModel = ViewModelProvider(this)[BetaConsentViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -49,36 +50,63 @@ class BetaConsentFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_beta_consent, container, false)
 
-        view.findViewById<TextView>(R.id.tvDescription).text = getString(R.string.beta_consent_description)
+        val statusText = view.findViewById<TextView>(R.id.tvConsentStatus)
+        val enableButton = view.findViewById<Button>(R.id.btnEnableConsent)
+        val changeButton = view.findViewById<Button>(R.id.btnChangeConsent)
+        val exportButton = view.findViewById<Button>(R.id.btnExport)
+        val clearButton = view.findViewById<Button>(R.id.btnClear)
+        val statsGrid = view.findViewById<ViewGroup>(R.id.statsGrid)
+        val totalEntriesText = view.findViewById<TextView>(R.id.tvTotalEntries)
+        val privacyInfo = view.findViewById<ViewGroup>(R.id.privacyInfo)
 
-        // Log level selection
-        val radioGroup = view.findViewById<RadioGroup>(R.id.rgLogLevel)
-        radioGroup.setOnCheckedChangeListener { _, checkedId ->
-            val level = when (checkedId) {
-                R.id.rbBasic -> LogLevel.BASIC
-                R.id.rbDetailed -> LogLevel.DETAILED
-                R.id.rbFull -> LogLevel.FULL
-                else -> LogLevel.BASIC
-            }
-            betaLogger.setLogLevel(level)
+        viewModel.consentGiven.observe(viewLifecycleOwner) { consent ->
+            statusText.text = if (consent) getString(R.string.beta_consent_active, viewModel.loggingLevel.value) else getString(R.string.beta_consent_disabled)
+            enableButton.visibility = if (consent) View.GONE else View.VISIBLE
+            changeButton.visibility = if (consent) View.VISIBLE else View.GONE
+            exportButton.visibility = if (consent) View.VISIBLE else View.GONE
+            clearButton.visibility = if (consent) View.VISIBLE else View.GONE
+            statsGrid.visibility = if (consent) View.VISIBLE else View.GONE
+            totalEntriesText.visibility = if (consent) View.VISIBLE else View.GONE
+            privacyInfo.visibility = if (consent) View.VISIBLE else View.GONE
         }
 
-        // Export logs button
-        view.findViewById<Button>(R.id.btnExport).apply {
-            text = getString(R.string.beta_consent_export)
-            setOnClickListener {
-                betaLogger.exportLogs()
+        viewModel.loggingStats.observe(viewLifecycleOwner) { stats ->
+            view.findViewById<TextView>(R.id.tvMeshEvents).text = stats.meshEvents.toString()
+            view.findViewById<TextView>(R.id.tvUserActions).text = stats.userActions.toString()
+            view.findViewById<TextView>(R.id.tvNetworkConditions).text = stats.networkConditions.toString()
+            view.findViewById<TextView>(R.id.tvBatteryImpacts).text = stats.batteryImpacts.toString()
+            view.findViewById<TextView>(R.id.tvInstallationSteps).text = stats.installationSteps.toString()
+            view.findViewById<TextView>(R.id.tvProtestMetrics).apply {
+                text = stats.protestMetrics.toString()
+                visibility = if (viewModel.loggingLevel.value == LoggingLevel.FULL) View.VISIBLE else View.GONE
             }
+            totalEntriesText.text = getString(R.string.beta_consent_total_entries, stats.totalEntries())
         }
 
-        // Clear logs button
-        view.findViewById<Button>(R.id.btnClear).apply {
-            text = getString(R.string.beta_consent_clear)
-            setOnClickListener {
-                betaLogger.clearLogs()
+        enableButton.setOnClickListener {
+            showConsentDialog()
+        }
+        changeButton.setOnClickListener {
+            showConsentDialog()
+        }
+        exportButton.setOnClickListener {
+            viewModel.exportData { stats, consent, level ->
+                // TODO: Implement export logic (e.g. share intent)
             }
+        }
+        clearButton.setOnClickListener {
+            viewModel.revokeConsent()
         }
 
         return view
+    }
+
+    private fun showConsentDialog() {
+        if (consentDialog == null) {
+            consentDialog = ConsentDialogFragment { consent, level ->
+                viewModel.setConsent(consent, level)
+            }
+        }
+        consentDialog?.show(parentFragmentManager, "ConsentDialog")
     }
 } 

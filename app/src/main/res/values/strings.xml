@@ -13,6 +13,37 @@
     <string name="menu_exit">Exit</string>
 
     <string name="menu_beta_consent">Log Settings</string>
+
+    <!-- Beta Consent UI -->
+    <string name="beta_consent_active">Active (%1$s)</string>
+    <string name="beta_consent_disabled">Disabled</string>
+    <string name="beta_consent_enable">Enable Beta Logging</string>
+    <string name="beta_consent_change">Change Settings</string>
+    <string name="beta_consent_export">Export Data</string>
+    <string name="beta_consent_clear">Disable &amp; Clear Data</string>
+    <string name="beta_consent_stats_title">Data Collection Statistics</string>
+    <string name="beta_consent_mesh_events">Mesh Events</string>
+    <string name="beta_consent_user_actions">User Actions</string>
+    <string name="beta_consent_network_conditions">Network Readings</string>
+    <string name="beta_consent_battery_impacts">Battery Metrics</string>
+    <string name="beta_consent_installation_steps">Install Steps</string>
+    <string name="beta_consent_protest_metrics">Protest Metrics</string>
+    <string name="beta_consent_total_entries">Total Entries: %1$d</string>
+    <string name="beta_consent_total_entries_placeholder">Total Entries: 0</string>
+    <string name="beta_consent_privacy_title">Privacy &amp; Security</string>
+    <string name="beta_consent_privacy_1">Data encrypted on device</string>
+    <string name="beta_consent_privacy_2">Anonymous user ID rotates monthly</string>
+    <string name="beta_consent_privacy_3">No personal data collected</string>
+    <string name="beta_consent_privacy_4">Auto-delete after 30 days</string>
+    <string name="beta_consent_privacy_protest">For Protest Environments: All data is stored locally and encrypted. Even if your device is confiscated, the beta logs cannot be decrypted without your device's secure keys.</string>
+    <!-- Consent Dialog -->
+    <string name="beta_consent_dialog_title">Beta Testing Consent</string>
+    <string name="beta_consent_dialog_description">Help improve Orbot-Meshrabiya by sharing anonymous usage data during beta testing. Choose your data sharing level below.</string>
+    <string name="beta_consent_level_basic">Basic (Recommended): Connectivity and basic performance metrics</string>
+    <string name="beta_consent_level_detailed">Detailed: Includes error logs and performance details</string>
+    <string name="beta_consent_level_full">Full (Beta Testers Only): All metrics including protest-specific data</string>
+    <string name="beta_consent_not_now">Not Now</string>
+    <string name="beta_consent_enable_logging">Enable Beta Logging</string>
     <string name="menu_scan">Scan BridgeQR</string>
     <string name="menu_share_bridge">Share BridgeQR</string>
     <string name="wizard_details_msg">Orbot is an open-source application that contains Tor, IPtProxy (Obfs4Proxy, Meek, Snowflake), Go-Tun2Socks and LibEvent. It provides a VPN tunnel, a local HTTP Connect proxy (HTTPS only on port 8118) and a SOCKS proxy (9050) into the Tor network.</string>

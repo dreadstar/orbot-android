@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/beta_consent_dialog_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/beta_consent_dialog_description"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:layout_marginBottom="16dp" />
+
+    <RadioGroup
+        android:id="@+id/rgLogLevelDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+        <RadioButton
+            android:id="@+id/rbBasicDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/beta_consent_level_basic" />
+        <RadioButton
+            android:id="@+id/rbDetailedDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/beta_consent_level_detailed" />
+        <RadioButton
+            android:id="@+id/rbFullDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/beta_consent_level_full" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnNotNow"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/beta_consent_not_now" />
+        <Button
+            android:id="@+id/btnEnableLogging"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/beta_consent_enable_logging"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+</LinearLayout>

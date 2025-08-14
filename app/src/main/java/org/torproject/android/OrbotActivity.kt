@@ -163,6 +163,10 @@ class OrbotActivity : BaseActivity() {
                 )
 
                 R.id.moreFragment -> navController.navigate(R.id.moreFragment, null, navOptions)
+
+                R.id.menu_beta_consent -> {
+                    startActivity(Intent(this, org.torproject.android.ui.BetaConsentActivity::class.java))
+                }
             }
 
             lastSelectedItemId = item.itemId
