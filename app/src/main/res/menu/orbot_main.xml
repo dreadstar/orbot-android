@@ -42,4 +42,8 @@
         android:title="@string/menu_exit"
         yourapp:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_beta_consent"
+        android:title="@string/menu_beta_consent"
+        yourapp:showAsAction="never" />
 </menu>

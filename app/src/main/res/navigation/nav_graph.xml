@@ -20,4 +20,10 @@
         android:name="org.torproject.android.KindnessFragment"
         android:label="fragment_kindness"
         tools:layout="@layout/fragment_kindness" />
+
+    <activity
+        android:id="@+id/betaConsentActivity"
+        android:name="org.torproject.android.ui.BetaConsentActivity"
+        android:label="@string/menu_beta_consent"
+        tools:layout="@layout/activity_beta_consent" />
 </navigation>

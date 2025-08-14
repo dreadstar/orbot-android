@@ -11,6 +11,8 @@
     <string name="main_layout_upload">Upload</string>
     <string name="button_about">About</string>
     <string name="menu_exit">Exit</string>
+
+    <string name="menu_beta_consent">Log Settings</string>
     <string name="menu_scan">Scan BridgeQR</string>
     <string name="menu_share_bridge">Share BridgeQR</string>
     <string name="wizard_details_msg">Orbot is an open-source application that contains Tor, IPtProxy (Obfs4Proxy, Meek, Snowflake), Go-Tun2Socks and LibEvent. It provides a VPN tunnel, a local HTTP Connect proxy (HTTPS only on port 8118) and a SOCKS proxy (9050) into the Tor network.</string>
