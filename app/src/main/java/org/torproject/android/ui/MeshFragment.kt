@@ -7,7 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import org.torproject.android.R
 import org.torproject.android.ui.AppManagerActivity
+import com.ustadmobile.meshrabiya.mmcp.MeshRole
 
 class MeshFragment : Fragment() {
     private val TAG = "MeshFragment"
@@ -132,6 +138,12 @@ fun MeshScreen(
                 )
             }
 
+            // Add mesh role information display
+            MeshRoleDisplay(
+                viewModel = viewModel,
+                modifier = Modifier.fillMaxWidth()
+            )
+
             Button(
                 onClick = onChooseAppsClick,
                 modifier = Modifier.fillMaxWidth()
@@ -146,5 +158,127 @@ fun MeshScreen(
                 Text("Refresh")
             }
         }
+    }
+}
+
+@Composable
+private fun MeshRoleDisplay(
+    viewModel: MeshViewModel,
+    modifier: Modifier = Modifier
+) {
+    val currentRoles by viewModel.currentMeshRoles.collectAsState()
+    val isRoleTransitionInProgress by viewModel.isRoleTransitionInProgress.collectAsState()
+    val meshIntelligence by viewModel.meshIntelligence.collectAsState()
+
+    Card(
+        modifier = modifier.padding(vertical = 8.dp),
+        elevation = 4.dp
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Mesh Roles",
+                    style = MaterialTheme.typography.h6
+                )
+                if (isRoleTransitionInProgress) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(16.dp),
+                            strokeWidth = 2.dp
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "Transitioning",
+                            style = MaterialTheme.typography.caption
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (currentRoles.isNotEmpty()) {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(currentRoles.toList()) { role ->
+                        MeshRoleChip(role = role)
+                    }
+                }
+            } else {
+                Text(
+                    text = "No active roles",
+                    style = MaterialTheme.typography.body2,
+                    color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
+                )
+            }
+
+            meshIntelligence?.let { intelligence ->
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Network: ${intelligence.totalNodes} nodes, ${intelligence.availableRoles.size} role types",
+                    style = MaterialTheme.typography.caption,
+                    color = MaterialTheme.colors.onSurface.copy(alpha = 0.7f)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Button(
+                onClick = { viewModel.updateMeshRoles() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Update Roles")
+            }
+        }
+    }
+}
+
+@Composable
+private fun MeshRoleChip(role: MeshRole) {
+    val roleDisplayName = when (role) {
+        MeshRole.TOR_GATEWAY -> "Tor Gateway"
+        MeshRole.CLEARNET_GATEWAY -> "Internet Gateway"
+        MeshRole.I2P_GATEWAY -> "I2P Gateway"
+        MeshRole.STORAGE_NODE -> "Storage"
+        MeshRole.COMPUTE_NODE -> "Compute"
+        MeshRole.COORDINATOR -> "Coordinator"
+        MeshRole.MESH_PARTICIPANT -> "Participant"
+        MeshRole.MESH_ROUTER -> "Router"
+    }
+
+    val roleColor = when (role) {
+        MeshRole.TOR_GATEWAY -> MaterialTheme.colors.primary
+        MeshRole.CLEARNET_GATEWAY -> MaterialTheme.colors.secondary
+        MeshRole.I2P_GATEWAY -> MaterialTheme.colors.primaryVariant
+        MeshRole.COORDINATOR -> MaterialTheme.colors.error
+        else -> MaterialTheme.colors.surface
+    }
+
+    Card(
+        backgroundColor = roleColor.copy(alpha = 0.1f),
+        border = BorderStroke(
+            1.dp, 
+            roleColor.copy(alpha = 0.3f)
+        )
+    ) {
+        Text(
+            text = roleDisplayName,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            style = MaterialTheme.typography.caption,
+            color = roleColor
+        )
     }
 } 

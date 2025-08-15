@@ -20,6 +20,7 @@ class MeshrabiyaService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
         Log.d(TAG, "onCreate: Initializing MeshrabiyaService")
         try {
             virtualNode = VirtualNode(applicationContext)
@@ -81,7 +82,34 @@ class MeshrabiyaService : Service() {
         Log.d(TAG, "onDestroy: Cleaning up MeshrabiyaService")
         super.onDestroy()
         stopMesh()
+        instance = null
     }
+
+    fun getVirtualNode(): VirtualNode? = virtualNode
+
+    fun getMeshRoleManager(): MeshRoleManager? = meshRoleManager
+
+    companion object {
+        const val ACTION_START = "org.torproject.android.service.MeshrabiyaService.START"
+        const val ACTION_STOP = "org.torproject.android.service.MeshrabiyaService.STOP"
+        
+        private var instance: MeshrabiyaService? = null
+        
+        fun getInstance(): MeshrabiyaService? = instance
+
+        fun getStartIntent(context: Context): Intent {
+            return Intent(context, MeshrabiyaService::class.java).apply {
+                action = ACTION_START
+            }
+        }
+
+        fun getStopIntent(context: Context): Intent {
+            return Intent(context, MeshrabiyaService::class.java).apply {
+                action = ACTION_STOP
+            }
+        }
+    }
+}
 
     companion object {
         const val ACTION_START = "org.torproject.android.service.MeshrabiyaService.START"
