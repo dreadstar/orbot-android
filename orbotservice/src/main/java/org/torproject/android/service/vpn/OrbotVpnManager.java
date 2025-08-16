@@ -74,6 +74,10 @@ public class OrbotVpnManager implements Handler.Callback {
     private DataOutputStream fos;
 
     private static final int DELAY_FD_LISTEN_MS = 5000;
+    
+    // Mesh gateway integration
+    private MeshTrafficHandler meshHandler;
+    private boolean meshGatewayEnabled = false;
 
     public OrbotVpnManager(OrbotService service) {
         mService = service;
@@ -318,6 +322,88 @@ public class OrbotVpnManager implements Handler.Callback {
     /** @noinspection BooleanMethodIsAlwaysInverted*/
     public boolean isStarted() {
         return isStarted;
+    }
+
+    /**
+     * Enable mesh gateway functionality
+     */
+    public void enableMeshGateway(boolean enabled) {
+        meshGatewayEnabled = enabled;
+        if (enabled && mTorSocks != -1 && mTorDns != -1) {
+            meshHandler = new MeshTrafficHandler(mTorSocks, mTorDns);
+            setupMeshRouting();
+        } else {
+            disableMeshRouting();
+        }
+    }
+
+    /**
+     * Setup mesh routing configuration
+     */
+    private void setupMeshRouting() {
+        Log.d(TAG, "setupMeshRouting: Configuring mesh traffic routing");
+        // Mesh routing configuration will be handled by MeshTrafficHandler
+    }
+
+    /**
+     * Disable mesh routing
+     */
+    private void disableMeshRouting() {
+        Log.d(TAG, "disableMeshRouting: Disabling mesh traffic routing");
+        if (meshHandler != null) {
+            meshHandler.cleanup();
+            meshHandler = null;
+        }
+    }
+
+    /**
+     * Get VPN interface for mesh integration
+     */
+    public ParcelFileDescriptor getVpnInterface() {
+        return mInterface;
+    }
+
+    /**
+     * Handle mesh packet injection into VPN
+     */
+    public void handleMeshPacket(byte[] packetData) {
+        if (!meshGatewayEnabled || meshHandler == null) {
+            return;
+        }
+
+        try {
+            var packet = IpSelector.newPacket(packetData, 0, packetData.length);
+            
+            if (packet instanceof IpPacket ipPacket) {
+                if (isFromMeshSubnet(ipPacket)) {
+                    // Apply mesh-specific routing rules
+                    if (shouldRouteThroughTor(ipPacket)) {
+                        IPtProxy.inputPacket(packetData);
+                    } else {
+                        meshHandler.routeViaClearnet(ipPacket);
+                    }
+                }
+            }
+        } catch (IllegalRawDataException e) {
+            Log.e(TAG, "Error processing mesh packet", e);
+        }
+    }
+
+    /**
+     * Check if packet originates from mesh subnet
+     */
+    private boolean isFromMeshSubnet(IpPacket packet) {
+        String srcAddr = packet.getHeader().getSrcAddr().getHostAddress();
+        return srcAddr != null && srcAddr.startsWith("10.255.");
+    }
+
+    /**
+     * Determine if packet should be routed through Tor
+     */
+    private boolean shouldRouteThroughTor(IpPacket packet) {
+        // For now, route all mesh traffic through Tor when gateway is enabled
+        // This could be enhanced with more sophisticated routing rules
+        return meshGatewayEnabled;
     }
 
     private boolean isVpnLockdown(final VpnService vpn) {

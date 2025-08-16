@@ -829,6 +829,29 @@ public class OrbotService extends VpnService {
         }.start();
     }
 
+    /**
+     * Enable mesh gateway routing through Orbot VPN
+     */
+    public void enableMeshGateway(boolean enabled) {
+        if (mVpnManager != null) {
+            mVpnManager.enableMeshGateway(enabled);
+        }
+    }
+
+    /**
+     * Get the VPN manager for mesh integration
+     */
+    public OrbotVpnManager getVpnManager() {
+        return mVpnManager;
+    }
+
+    /**
+     * Check if Tor service is running and ready for mesh gateway
+     */
+    public boolean isTorReadyForMesh() {
+        return mCurrentStatus.equals(STATUS_ON) && mPortSOCKS != -1 && mPortDns != -1;
+    }
+
     private void sendCallbackLogMessage(final String logMessage) {
         var notificationMessage = logMessage;
         var localIntent = new Intent(LOCAL_ACTION_LOG).putExtra(LOCAL_EXTRA_LOG, logMessage);
