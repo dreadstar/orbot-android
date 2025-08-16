@@ -11,6 +11,11 @@
         android:title="@string/mesh" />
 
     <item
+        android:id="@+id/navigation_storage"
+        android:icon="@drawable/ic_storage"
+        android:title="@string/storage_participation" />
+
+    <item
         android:id="@+id/navigation_bridges"
         android:icon="@drawable/ic_bridges"
         android:title="@string/bridges" />

@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_mesh" />
 
     <fragment
+        android:id="@+id/navigation_storage"
+        android:name="com.ustadmobile.meshrabiya.ui.StorageParticipationFragment"
+        android:label="@string/storage_participation"
+        tools:layout="@layout/fragment_storage_participation" />
+
+    <fragment
         android:id="@+id/navigation_bridges"
         android:name="org.torproject.android.ui.BridgesFragment"
         android:label="@string/bridges"

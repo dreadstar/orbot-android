@@ -344,4 +344,5 @@
     <string name="beta_consent_clear">Clear Logs</string>
 
     <string name="mesh">Mesh</string>
+    <string name="storage_participation">Storage</string>
 </resources>
